@@ -11,7 +11,7 @@ public:
         : Character(cl, hp, dam, x, y, f, a,w), ArmorName(A), defense(def), SwordSharpness(SS),remote_damage(rd) {
         HP += defense;
     }
-    ~Warrior() {}
+    virtual ~Warrior() {}
     //геттеры
     string getArmorName()const { return ArmorName; }
     int getRemote_Damage()const { return remote_damage; }

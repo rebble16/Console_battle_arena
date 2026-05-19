@@ -8,7 +8,7 @@ private:
 public:
 	Magician(string cl, int hp, int dam, int x, int y, string f, char a,string w,
 		string p = "Fire", int pd = 25) :Character(cl, hp, dam, x, y, f, a,w),power(p),power_damage(pd){}
-	~Magician() {}
+	virtual ~Magician() {}
 	void Attack(Character& o)override;//ближняя атака стальным шестом
 	void Magic_Attack(Character& o);//атака магией на расстоянии
 	bool isAllowedMagicAttack(Character& o);//проверка достаточно ли расстояния для того чтобы атаковать магией, если слишком близко или далеко - не атаковать
