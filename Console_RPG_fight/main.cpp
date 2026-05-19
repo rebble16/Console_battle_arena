@@ -3,7 +3,7 @@
 #include "Orc.h"
 #include "Magician.h"
 #include<fstream>
-enum{orcVSwarrior=1,orcVSmagician,warriorVSmagician};
+enum{orcVSwarrior=1,orcVSmagician,warriorVSmagician,QUIT};
 void showMap(Character* ch1, Character* ch2);
 void move_ch(int& d, Character& o, Character& check);
 void move_ch_opposite(int& d, Character& o, Character& check);
@@ -53,8 +53,10 @@ int main() {
             //воин против маги
             WarriorVSMagician(whoHits, witcher, vilgefortz, dir1, dir2, isHit1, isOver);
             break;
-        default:
+        case QUIT:
             isOver = true;
+            break;
+        default:
             break;
         }
     }
@@ -394,11 +396,11 @@ int BattlePick()
     cout << "======================================       1.Orc versus Warrior           ============================================" << endl;
     cout << "======================================       2.Orc versus Magician          ============================================" << endl;
     cout << "======================================       3.Warrior versus Magician      ============================================" << endl;
-    cout << "======================================       Any other key to QUIT          ============================================" << endl;
+    cout << "======================================       4.To QUIT                      ============================================" << endl;
     do
     {
         cin >> input;
-    } while (input < 1 && input>3);
+    } while (input < 1 || input>4);
     return input;
 }
 void menu(Warrior& o1, Orc& o2, Magician& o3)
