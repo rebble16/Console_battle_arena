@@ -188,3 +188,4 @@
 188. Vilgefortz won the battle!
 189. Witcher won the battle!
 190. Vilgefortz won the battle!
+191. Azog won the battle!
