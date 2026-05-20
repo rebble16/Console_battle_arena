@@ -146,7 +146,7 @@ void Character::animateRemoteAttack(Character& o, char symb)
     int dy = (y_target > posY) ? 1 : (y_target < posY) ? -1 : 0;
     double realDistance = sqrt(dx * dx + dy * dy);
     int steps = int(realDistance);
-    for (int i = 1; i <= steps; i++)
+    for (int i = 0; i <= steps; i++)
     {
         int cx = posX + dx * i, cy = posY + dy * i;
         showRemoteAttack(o, cx, cy, symb);
