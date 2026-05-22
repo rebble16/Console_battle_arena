@@ -7,7 +7,6 @@ enum{orcVSwarrior=1,orcVSmagician,warriorVSmagician,QUIT};
 void showMap(Character* ch1, Character* ch2);
 void move_ch(int& d, Character& o, Character& check);
 void move_ch_opposite(int& d, Character& o, Character& check);
-void gotoxy(int x, int y);
 void SaveVictory(string winner);
 int OrcVSWarrior(int& whoHitsFirst, Warrior& witcher, Orc& azog, int& dir1, int& dir2, bool& isHit1, bool& isOver);
 int OrcVSMagician(int& whoHitsFirst, Orc& azog, Magician& vilgefortz, int& dir1, int& dir2, bool& isHit1, bool& isOver);
@@ -23,7 +22,6 @@ void GameOver();
 int main() {
     srand(time(NULL));
     setlocale(LC_ALL, "RU");
-    gotoxy(0, 0); // курсор в начало консоли
     Warrior witcher("Geralt of Rivia", 100, 20, 2, 3, "Magic signs", 'W', "Sword");
     Orc azog("Azog the Defiler", 150, 20, 10, 5, "Superhuman strength", 'O',"Mace");
     Magician vilgefortz("Vilgefortz of Roggeveen", 100, 10, 4, 11, "Master of Magic", 'M',"Steel pole");
@@ -104,12 +102,6 @@ void move_ch_opposite(int& d, Character& o, Character& check)
     else cout << "Error!" << endl;
 }
 
-void gotoxy(int x, int y) {
-    COORD coord;
-    coord.X = x;
-    coord.Y = y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
 void SaveVictory(string winner)
 {
     //считаем количество строк в файле

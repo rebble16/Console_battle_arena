@@ -1,3 +1,22 @@
+#include "Character.h"
+char MAP[HEIGHT][WIDTH] =
+{
+    '#','#','#','#','#','#','#','#','#','#','#','#','#','#',
+    '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+    '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+    '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+    '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+    '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+    '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+    '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+    '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+    '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+    '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+    '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+    '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+    '#','#','#','#','#','#','#','#','#','#','#','#','#','#'
+};
+
 Character::Character(string C, int h, int d, int x, int y, string f, char ch,string w)
     : name(C), HP(h), damage(d), posX(x), posY(y), feature(f), appearance(ch),weapon(w) {
 }
@@ -37,11 +56,11 @@ bool Character::inBorders(int d) const {
     default: return false;
     }
 
-    // РџСЂРѕРІРµСЂРєР° РІС‹С…РѕРґР° Р·Р° РіСЂР°РЅРёС†С‹ РєР°СЂС‚С‹
+    // Проверка выхода за границы карты
     if (newX < 1 || newX >= WIDTH-1 || newY < 1 || newY >= HEIGHT-1)
         return false;
 
-    // РџСЂРѕРІРµСЂРєР° СЃС‚РµРЅС‹ 
+    // Проверка стены 
     if (MAP[newY][newX] == '#') return false;
 
     return true;
@@ -54,27 +73,27 @@ bool Character::isOccupied(int y, int x,Character& o) const
 }
 void Character::toRun(Character& o, bool isUnderAttack)
 {
-    if (!isUnderAttack) return;          // СѓР±РµРіР°РµРј С‚РѕР»СЊРєРѕ РїРѕСЃР»Рµ РїРѕР»СѓС‡РµРЅРёСЏ СѓРґР°СЂР°
+    if (!isUnderAttack) return;          // убегаем только после получения удара
 
     int x_enemy = o.getPosX();
     int y_enemy = o.getPosY();
     int x_me = posX;
     int y_me = posY;
 
-    // РќР°РїСЂР°РІР»РµРЅРёРµ РћРў РІСЂР°РіР°
+    // Направление ОТ врага
     int dx = 0, dy = 0;
-    if (x_me < x_enemy) dx = -1;         // РІСЂР°Рі СЃРїСЂР°РІР° - Р±РµР¶РёРј РІР»РµРІРѕ
-    else if (x_me > x_enemy) dx = 1;     // РІСЂР°Рі СЃР»РµРІР° вЂ“ Р±РµР¶РёРј РІРїСЂР°РІРѕ
+    if (x_me < x_enemy) dx = -1;         // враг справа - бежим влево
+    else if (x_me > x_enemy) dx = 1;     // враг слева – бежим вправо
 
     if (dx == 0)
     {
-        if (y_me < y_enemy) dy = -1;         // РІСЂР°Рі СЃРЅРёР·Сѓ вЂ“ Р±РµР¶РёРј РІРІРµСЂС…
-        else if (y_me > y_enemy) dy = 1;     // РІСЂР°Рі СЃРІРµСЂС…Сѓ вЂ“ Р±РµР¶РёРј РІРЅРёР·
+        if (y_me < y_enemy) dy = -1;         // враг снизу – бежим вверх
+        else if (y_me > y_enemy) dy = 1;     // враг сверху – бежим вниз
     }
     int newX = x_me + dx;
     int newY = y_me + dy;
 
-    // Р¤СѓРЅРєС†РёСЏ РїСЂРѕРІРµСЂРєРё РїСЂРѕС…РѕРґРёРјРѕСЃС‚Рё (СЃС‚РµРЅС‹ + РіСЂР°РЅРёС†С‹)
+    // Функция проверки проходимости (стены + границы)
     auto isWalkable = [](int x, int y) -> bool {
         return (x >= 1 && x < WIDTH - 1 && y >= 1 && y < HEIGHT - 1 && MAP[y][x] != '#');
         };
@@ -93,9 +112,9 @@ void Character::toPursue(Character& o)
     int y_me = posY;
 
     int dist = sqrt(pow(x_enemy - x_me, 2) + pow(y_enemy - y_me, 2));
-    if (dist <= 1) return;              // СѓР¶Рµ СЂСЏРґРѕРј вЂ“ Р°С‚Р°РєСѓРµРј РІ РѕСЃРЅРѕРІРЅРѕРј С†РёРєР»Рµ
+    if (dist <= 1) return;              // уже рядом – атакуем в основном цикле
 
-    // РќР°РїСЂР°РІР»РµРЅРёРµ Рє РІСЂР°РіСѓ
+    // Направление к врагу
     int dx = 0, dy = 0;
     if (x_me < x_enemy) dx = 1;
     else if (x_me > x_enemy) dx = -1;
@@ -109,9 +128,9 @@ void Character::toPursue(Character& o)
     int newX = x_me + dx;
     int newY = y_me + dy;
 
-    // РџСЂРѕРІРµСЂРєР° РЅР° СЃС‚РµРЅС‹
+    // Проверка на стены
     bool walkable = (newX >= 1 && newX < WIDTH - 1 && newY >= 1 && newY < HEIGHT - 1 && MAP[newY][newX] != '#');
-    // Р—Р°РїСЂРµС‰Р°РµРј Р·Р°РЅРёРјР°С‚СЊ РєР»РµС‚РєСѓ РІСЂР°РіР°
+    // Запрещаем занимать клетку врага
     if (walkable && (newX != x_enemy || newY != y_enemy))
         move(dx, dy, o);
 }
